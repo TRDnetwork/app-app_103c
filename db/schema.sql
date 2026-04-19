@@ -1,0 +1,3 @@
+-- No database required — all features are static or handled by serverless functions
+-- Contact form submissions processed by Email Agent via api/contact.ts (Resend integration)
+-- No Supabase tables, RLS policies, storage buckets, or edge functions needed

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><script>window.__SUPABASE_URL__="https://wmxnwapnfurwoalvkkwh.supabase.co";window.__SUPABASE_ANON_KEY__="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndteG53YXBuZnVyd29hbHZra3doIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5MDgwODEsImV4cCI6MjA5MTQ4NDA4MX0.BNgF4LD35_Ooxtkv5Pok8ldrBeHPOCDauv-ZYG1v7_Q";</script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              bg: '#faf8f5',
+              surface: '#e9e5dd',
+              text: '#1a2e1a',
+              'text-dim': '#4a4a4a',
+              accent: '#e66000',
+              'accent-alt': '#ff8c42',
+            },
+            fontFamily: {
+              display: ['Fraunces', 'serif'],
+              body: ['Satoshi', 'sans-serif'],
+            },
+            spacing: {
+              container: '1200px',
+            },
+            animation: {
+              'slide-up': 'slideUp 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards',
+              toast: 'slideDown 0.3s ease-in-out forwards',
+            },
+            keyframes: {
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideDown: {
+                '0%': { transform: 'translateY(-100%)' },
+                '100%': { transform: 'translateY(0)' },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --bg: #faf8f5;
+        --text: #1a2e1a;
+        --accent: #e66000;
+        --accent-alt: #ff8c42;
+      }
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+      .text-dim {
+        color: #4a4a4a;
+      }
+      .hover-lift {
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+      }
+      .hover-lift:hover {
+        transform: translateY(-6px);
+      }
+      .focus-glow:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .toast {
+        animation: toast 0.3s ease-in-out forwards;
+      }
+    </style>
+  </head>
+  <body class="bg-bg text-text">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
