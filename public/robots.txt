@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://portfolio-pro.trdnet.co/sitemap.xml
+Sitemap: https://app_103c.trdnet.io/sitemap.xml

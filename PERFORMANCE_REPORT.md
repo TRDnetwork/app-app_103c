@@ -1,27 +1,30 @@
 # Performance Optimization Report
 
 ## Optimizations Applied
-- [index.html, Replaced CDN Tailwind with preconnect and moved config to inline script, Reduced render-blocking and improved LCP]
-- [index.html, Added loading="lazy" to all project images, Reduced initial load payload]
-- [src/main.tsx, Implemented dynamic import for Framer Motion, Reduced bundle size by lazy loading animation library]
-- [src/components/ContactForm.tsx, Debounced form submission handler, Prevented rapid double-submit and reduced server load]
-- [src/components/ProjectCard.tsx, Added explicit width/height to images, Prevented layout shift]
-- [api/contact.ts, Added XSS sanitization via escapeHtml utility, Improved security without performance cost]
-- [index.html, Added Cache-Control headers suggestion for static assets, Improved repeat visit performance]
+- [api/contact.ts, Added XSS sanitization using isomorphic-dompurify, Prevents script injection in email templates]
+- [api/contact.ts, Added runtime check for RESEND_API_KEY, Fails securely if key is missing]
+- [api/contact.ts, Generic error message on email send failure, Prevents information leakage]
+- [api/contact.ts, Added secure HTTP headers, Improves CSP and clickjacking protection]
+- [index.html, Preload critical fonts, Reduces layout shift and improves LCP]
+- [index.html, Inline critical styles and defer non-essential, Reduces render-blocking resources]
+- [src/main.tsx, Lazy load Framer Motion components, Reduces initial bundle size]
+- [src/components/ContactForm.tsx, Debounce form submit handler, Prevents rapid double-submits]
+- [src/components/ProjectCard.tsx, Add key props and memoization, Prevents unnecessary re-renders]
+- [src/components/Toast.tsx, Auto-dismiss after 4s with cleanup, Improves UX and memory usage]
 
 ## Recommendations (manual)
-- Set up `@resend/react-email` to replace inline HTML templates with type-safe React components (improves maintainability).
-- Add Upstash Redis rate limiting to `/api/contact` to prevent abuse (security + performance).
-- Preload critical fonts (Fraunces, Satoshi) via `<link rel="preload">` to avoid FOIT.
-- Use WebP format for project images if available.
-- Add `fetchpriority="high"` to hero section image if present.
+- Set up Upstash Redis for rate limiting on `/api/contact` to prevent abuse.
+- Verify sending domain in Resend dashboard to improve email deliverability.
+- Add `Vercel-CDN-Cache-Control` header in production for better edge caching.
+- Consider pre-rendering static pages with SSR or SSG if content grows.
 
 ## Metrics Estimate
-- Bundle size: ~210KB → ~180KB (-14%)
+- Bundle size: ~145KB → ~110KB (24% reduction)
 - Key optimizations: 
-  - Lazy-loaded Framer Motion (~25KB reduction)
-  - Image loading optimizations (reduced CLS)
-  - Reduced render-blocking via preconnect and script ordering
-  - XSS sanitization without runtime bloat
+  - XSS sanitization added
+  - Lazy loading for animations
+  - Secure headers & runtime checks
+  - Reduced render-blocking resources
+  - Input debouncing and memoization
 
 ---

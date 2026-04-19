@@ -1,3 +1,2 @@
--- No database required — all features are static or handled by serverless functions
--- Contact form submissions processed by Email Agent via api/contact.ts (Resend integration)
--- No Supabase tables, RLS policies, storage buckets, or edge functions needed
+-- No database required — app is a static portfolio site with no user data storage.
+-- Contact form handled by Email Agent via Vercel serverless function (api/contact.ts).
