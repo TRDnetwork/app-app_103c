@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: #faf8f5;
+    --color-surface: #e9e5dd;
+    --color-text: #1a2e1a;
+    --color-text-dim: #4a4a4a;
+    --color-accent: #e66000;
+    --color-accent-alt: #ff8c42;
+  }
+
+  body {
+    @apply bg-[#faf8f5] text-[#1a2e1a] font-satoshi leading-normal;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-fraunces text-[#1a2e1a] leading-tight;
+    letter-spacing: -0.05em;
+  }
+
+  input, textarea, select, button {
+    @apply font-satoshi;
+  }
+}
+
+@layer components {
+  .max-container {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .prose {
+    @apply max-w-3xl mx-auto;
+  }
+
+  .prose > * {
+    @apply mb-6 last:mb-0;
+  }
+
+  .visually-hidden {
+    @apply absolute h-px w-px overflow-hidden clip clip-path-none;
+  }
+}
+
+@layer utilities {
+  .transition-all-cubic {
+    @apply transition-all duration-300 ease-cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces.woff2') format('woff2');
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
