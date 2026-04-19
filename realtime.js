@@ -1,1 +1,1 @@
-// No realtime needed — static site with no database
+// No realtime needed — static site with no database.

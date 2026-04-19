@@ -1,2 +1,1 @@
--- No database required — app is a static portfolio site with no user data storage.
--- Contact form handled by Email Agent via Vercel serverless function (api/contact.ts).
+-- No database required — app is static. Contact form handled by Email Agent via Vercel serverless function (api/contact.ts) using Resend.

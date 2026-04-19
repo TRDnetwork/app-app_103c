@@ -1,32 +1,43 @@
-import { motion } from 'framer-motion';
+import React from 'react';
 
-interface ProjectCardProps {
+interface MobileProjectCardProps {
   title: string;
   description: string;
+  image: string;
   link: string;
 }
 
-export default function MobileProjectCard({ title, description, link }: ProjectCardProps) {
+const MobileProjectCard: React.FC<MobileProjectCardProps> = ({
+  title,
+  description,
+  image,
+  link,
+}) => {
   return (
-    <motion.div
-      className="bg-surface p-6 rounded-lg shadow-sm border border-transparent hover:border-accent transition-colors duration-300 flex flex-col"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      tabIndex={0}
-      aria-label={`${title}: ${description}`}
+    <div
+      className="bg-surface p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 hover-lift active:scale-98"
+      role="group"
+      aria-label={`Project: ${title}`}
     >
-      <h3 className="text-xl font-bold text-text mb-2 font-display">{title}</h3>
-      <p className="text-text-dim mb-4 flex-grow">{description}</p>
+      <img
+        src={image}
+        alt={title}
+        className="w-full h-40 object-cover rounded-md mb-4"
+        loading="lazy"
+      />
+      <h3 className="text-lg font-bold text-text mb-2 font-display">{title}</h3>
+      <p className="text-text-dim text-sm mb-4">{description}</p>
       <a
         href={link}
-        className="text-accent hover:text-accent-alt font-medium inline-flex items-center group focus:outline-none focus:ring-2 focus:ring-accent focus:rounded"
-        aria-label={`View project: ${title}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block text-accent text-sm font-medium focus:outline-none focus:ring-2 focus:ring-accent focus:rounded"
       >
-        View Project
-        <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
+        View Project →
       </a>
-    </motion.div>
+    </div>
   );
-}
+};
+
+export default MobileProjectCard;
+---

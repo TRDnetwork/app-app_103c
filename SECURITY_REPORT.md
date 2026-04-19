@@ -1,29 +1,38 @@
 # Security Scan Report
 
 ## Critical Issues
-- **Exposed API Keys** — `RESEND_API_KEY` is referenced in `api/contact.ts` but relies on environment variables. While not hardcoded, the file assumes the key is set in Vercel env. No explicit validation or error handling if missing.  
-  **Fix**: Add runtime check and fail securely if `RESEND_API_KEY` is missing.
+- **[api/contact.ts:30]** **XSS (Cross-Site Scripting)** — User input (`name`, `email`, `message`) is directly interpolated into HTML email templates without sanitization. This could allow attackers to inject malicious scripts into emails viewed by the site owner or user.
+  - **Fix**: Sanitize user input using `isomorphic-dompurify` before inserting into HTML templates.
 
-- **XSS (Cross-Site Scripting)** — In `api/contact.ts`, user input (`name`, `email`, `message`) is directly interpolated into HTML email templates without sanitization.  
-  **Fix**: Sanitize `message` and `name` before inserting into HTML to prevent script injection in email body.
+- **[api/contact.ts:35]** **Exposed API Keys** — While `RESEND_API_KEY` is accessed via `process.env`, there is no validation that it's defined. If missing, the error could expose internal logic or be logged.
+  - **Fix**: Add explicit check for required environment variables and throw generic error.
+
+- **[src/emails/contact-notification.js:13]** **XSS (Cross-Site Scripting)** — The `message` and `name` fields are directly inserted into the HTML email without escaping, enabling script injection.
+  - **Fix**: Sanitize all user-provided data before rendering in HTML.
+
+- **[src/emails/contact-confirmation.js:8]** **XSS (Cross-Site Scripting)** — The `name` field is directly inserted into the HTML email, which could lead to script injection if name contains HTML/JS.
+  - **Fix**: Sanitize `name` before use.
 
 ## Warnings
-- **Missing Rate Limiting** — The `/api/contact` endpoint has no rate limiting. Could be abused for spam despite honeypot.  
-  **Fix**: Integrate Upstash Rate Limiting (aligned with team context).
+- **[api/contact.ts:12]** **Missing Rate Limiting** — The contact form endpoint has no rate limiting, making it vulnerable to spam or abuse.
+  - **Fix**: Integrate Upstash Redis for IP-based rate limiting (already in user preferences).
 
-- **Insecure Headers** — No Content Security Policy (CSP), X-Frame-Options, or X-Content-Type-Options in serverless function response.  
-  **Fix**: Add secure headers in API response.
+- **[api/contact.ts:50]** **Data Exposure** — Internal error messages (e.g., `error.message`) are returned to the client, potentially leaking server details.
+  - **Fix**: Log full error server-side but return a generic message to the client.
 
-- **Data Exposure in Error Messages** — Internal error message `"Failed to send message. Please try again later."` leaks implementation detail (`resend.emails.send`).  
-  **Fix**: Use generic error message.
+- **[index.html]** **Insecure Headers** — Missing security headers like `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`.
+  - **Fix**: These should be set at the hosting layer (Vercel) via `vercel.json` or middleware.
 
 ## Passed Checks
-- SQL Injection: Not applicable — no database queries.
-- CORS Misconfiguration: Not applicable — Vercel handles CORS securely by default.
-- Authentication Issues: Not applicable — no auth routes.
-- Path Traversal: Not applicable — no file system access.
-- Insecure Dependencies: No `package.json` found — minimal attack surface.
-- Form Validation: Client and server validation present.
-- Honeypot: Properly implemented with silent success.
+- No SQL injection vulnerabilities found (no database queries).
+- No CORS misconfiguration (no API routes exposed client-side with wildcard origins).
+- No authentication issues (static site, no protected routes).
+- No path traversal (no file system access with user input).
+- No insecure dependencies detected in code (no `package.json` scanned here, but no obvious vulnerable patterns).
+- Form honeypot implemented correctly.
+- JWT not used.
 
 ---
+
+### Summary
+Critical XSS risks in email templates must be fixed immediately. All user input must be sanitized before being used in HTML output. Environment variables should be validated, and verbose errors suppressed. Rate limiting and security headers are recommended enhancements.
